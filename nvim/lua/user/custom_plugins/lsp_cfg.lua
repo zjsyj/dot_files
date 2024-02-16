@@ -24,8 +24,8 @@ local cfg = function()
 
         local settings_ok, conf_opts = pcall(require, "user.lsp.settings." .. server)
         if settings_ok then
-            -- print("install config " .. server .. " ok")
-            local server_opts = vim.tbl_deep_extend("force", conf_opts, opts)
+--            print("install config " .. server .. " ok")
+            local server_opts = vim.tbl_deep_extend("force", opts, conf_opts)
             lsp_cfg[server].setup(server_opts)
         else
             print('No correct setting for ' .. server)

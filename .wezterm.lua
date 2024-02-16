@@ -22,17 +22,11 @@ config.warn_about_missing_glyphs = false
 
 -- cancel windows native headline
 config.window_decorations = 'INTEGRATED_BUTTONS | RESIZE'
---[[
-config.default_prog = {
-    'cmd.exe',
-    '/k',
-    'C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvars64.bat',
-}
-]]
-
-config.default_cwd = 'D:/Training/js_src'
-
-config.launch_menu = {
+local default_cwd = ''
+local launch_menu = {}
+if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+default_cwd = 'D:/Training/js_src'
+launch_menu = {
     {
         label = "CMD",
         args = { "cmd.exe" },
@@ -47,6 +41,15 @@ config.launch_menu = {
     },
     { label = 'PowerShell', args = { 'powershell.exe', }, },
 }
+elseif wezterm.target_triple == 'x86_64-unknown-linux-gnu' then
+    default_cwd = '/home/jiasheng/projects'
+    table.insert(launch_menu,{
+            label = 'Bash',
+            args = {'bash','-l'},
+    })
+
+end
+
 
 -- You can specify some parameters to influence the font selection;
 -- for example, this selects a Bold, Italic font variant.
@@ -63,6 +66,9 @@ local function basename(s)
     return string.gsub(s, '(.*[/\\])(.*)', '%2')
 end
 
+config.default_cwd = default_cwd
+config.launch_menu = launch_menu
+
 wezterm.on('format-tab-title', function(tab, tabs)
     local pane = tab.active_pane
     local index = ""
@@ -77,7 +83,6 @@ wezterm.on('format-tab-title', function(tab, tabs)
     } }
 end
 )
-
 -- init startup
 wezterm.on('gui-startup', function(cmd)
     local _, _, window = wezterm.mux.spawn_window(cmd or {})
@@ -105,4 +110,3 @@ config.keys = {
 }
 
 return config
-
