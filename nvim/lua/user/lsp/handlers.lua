@@ -101,7 +101,7 @@ local function lsp_highlight_document(client, bufnr)
 
     -- enable inlay hints
     if client.server_capabilities.inlayHintProvider then
-        vim.lsp.inlay_hint.enable(bufnr, true)
+        vim.lsp.inlay_hint.enable(true, {bufnr})
     end
 end
 

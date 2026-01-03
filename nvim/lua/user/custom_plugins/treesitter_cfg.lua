@@ -1,8 +1,10 @@
 local M = {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    lazy = false,
    -- event = {'LazyFile', 'VeryLazy'},
     event = 'VeryLazy',
+--[[
     cmd = {'TSInstall', 'TSUpdate', 'TSUpdateSync'},
     config = function()
         local configs = require('nvim-treesitter.configs')
@@ -26,8 +28,7 @@ local M = {
             -- parser_install_dir = parser_dir
         })
     end
+]]
 }
 
-return {
-    M
-}
+return M
