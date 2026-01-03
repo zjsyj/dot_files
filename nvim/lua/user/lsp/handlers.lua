@@ -32,9 +32,9 @@ end
 M.setup = function()
     local signs = {
         { name = "DiagnosticSignError", text = "" },
-        { name = "DiagnosticSignWarn",  text = "" },
-        { name = "DiagnosticSignHint",  text = "" },
-        { name = "DiagnosticSignInfo",  text = "" },
+        { name = "DiagnosticSignWarn", text = "" },
+        { name = "DiagnosticSignHint", text = "" },
+        { name = "DiagnosticSignInfo", text = "" },
     }
 
     for _, sign in ipairs(signs) do
@@ -105,7 +105,7 @@ local function lsp_highlight_document(client, bufnr)
     end
 end
 
-local function lsp_keymaps(bufnr)
+local function lsp_keymaps(_, bufnr)
     vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
     local opts = { noremap = true, silent = true }
@@ -120,7 +120,7 @@ local function lsp_keymaps(bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wx', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    -- collision with telescope
+    -- collisio with telescope
     -- vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>f", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "]d", '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, "n", "[d", '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
@@ -140,12 +140,11 @@ M.on_attach = function(client, bufnr)
         client.server_capabilities.documentFormattingProvider = false
     end
 
-
     setup_codelens_refersh(client, bufnr)
 
     lsp_highlight_document(client, bufnr)
 
-    lsp_keymaps(bufnr)
+    lsp_keymaps(client, bufnr)
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
